@@ -8,10 +8,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.concurrent.TimeUnit;
 
-public class visualizarSiteAmazon {
+public class visualizarSiteMercadoLivre {
 
     @Test
-    public void acessaAmazonTest(){
+    public void acessaMercadoLivreTest(){
 
         System.setProperty("webdriver.chrome.driver", "/home/user/chromedriver");
         WebDriver navegador = new ChromeDriver();
