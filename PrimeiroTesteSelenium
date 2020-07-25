@@ -1,0 +1,30 @@
+package testSiteDeCompras;
+
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.util.concurrent.TimeUnit;
+
+public class visualizarSiteAmazon {
+
+    @Test
+    public void acessaAmazonTest(){
+
+        System.setProperty("webdriver.chrome.driver", "/home/user/chromedriver");
+        WebDriver navegador = new ChromeDriver();
+        navegador.manage().window().maximize();
+        navegador.get("https://www.mercadolivre.com.br/");
+
+        navegador.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+
+        navegador.findElement(By.cssSelector("img[title='Aproveite preços incríveis todos os dias']")).click();
+
+        navegador.findElement(By.cssSelector("img[alt='Samsung Galaxy A01 Dual Sim 32 Gb Azul 2 Gb Ram ']")).click();
+
+        JavascriptExecutor js = (JavascriptExecutor)navegador;
+        js.executeScript("javascript:window.scrollBy(200,200)");
+     }
+}
