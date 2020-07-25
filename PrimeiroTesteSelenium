@@ -19,11 +19,12 @@ public class visualizarSiteAmazon {
         navegador.get("https://www.mercadolivre.com.br/");
 
         navegador.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-
+        
         navegador.findElement(By.cssSelector("img[title='Aproveite preços incríveis todos os dias']")).click();
 
         navegador.findElement(By.cssSelector("img[alt='Samsung Galaxy A01 Dual Sim 32 Gb Azul 2 Gb Ram ']")).click();
-
+    
+        //Fazendo scrooll na página
         JavascriptExecutor js = (JavascriptExecutor)navegador;
         js.executeScript("javascript:window.scrollBy(200,200)");
      }
