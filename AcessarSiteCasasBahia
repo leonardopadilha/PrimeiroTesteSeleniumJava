@@ -1,0 +1,39 @@
+package testSiteDeCompras;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.util.concurrent.TimeUnit;
+
+public class visualizarSiteCasasBahia {
+
+    private WebDriver navegador;
+
+    @Before
+    public void setUp(){
+        System.setProperty("webdriver.chrome.driver", "/home/user/chromedriver");
+        navegador = new ChromeDriver();
+        navegador.manage().window().maximize();
+        navegador.get("https://www.casasbahia.com.br/");
+
+        navegador.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        navegador.findElement(By.cssSelector("button[class='shoppush-prompt-btn shoppush-disallow-btn']")).click();
+
+        navegador.findElement(By.cssSelector("a[class='adobeCampaign__close']")).click();
+    }
+
+    @Test
+    public void pesquisaItem(){
+        navegador.findElement(By.id("strBusca")).click();
+        navegador.findElement(By.cssSelector("li[ranking='2']")).click();
+    }
+
+    @After
+    public void fecharNavegador(){
+        navegador.quit();
+    }
+}
