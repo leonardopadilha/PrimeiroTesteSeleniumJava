@@ -1,0 +1,45 @@
+package primeirosTestesSelenium;
+
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.util.concurrent.TimeUnit;
+
+public class PesquisarProdutosMercadoLivre {
+
+    @Test
+    public void testAcessarProdutoDeslogado(){
+
+        //Abrindo site
+        System.setProperty("webdriver.chrome.driver", "usuarios/usuario/drivers/chromedriver");
+        WebDriver navegador = new ChromeDriver();
+        navegador.manage().window().maximize();
+        navegador.get("https://www.mercadolivre.com.br/");
+
+        navegador.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+        //Pesquisando pelo produto
+        navegador.findElement(By.name("as_word")).sendKeys("IPhone XR 128gb");
+        navegador.findElement(By.cssSelector("button[type='submit']")).click();
+
+        //Fechando modal de CEP
+        navegador.findElement(By.cssSelector("span[class='andes-tooltip-button-close']")).click();
+
+        //Fazendo scroll na página
+        JavascriptExecutor js = (JavascriptExecutor)navegador;
+        js.executeScript("javascript:window.scrollBy(150,150)");
+
+        //Selecionando o produto
+        navegador.findElement(By.linkText("iPhone XR 128 GB Branco 3 GB RAM")).click();
+
+        //Alterando a cor do produto
+        navegador.findElement(By.cssSelector("img[alt='Preto']")).click();
+        navegador.findElement(By.cssSelector("img[data-testid='thumbnail-697778-MLA42520891693_072020']")).click();
+
+        //Clicando no botão comprar
+        navegador.findElement(By.cssSelector("span[class='andes-button__content']")).click();
+    }
+}
