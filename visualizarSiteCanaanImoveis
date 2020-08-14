@@ -1,0 +1,33 @@
+package testSiteDeCompras;
+
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.util.concurrent.TimeUnit;
+
+public class visualizarSiteCanaanImoveis {
+
+    @Test
+    public void testPesquisarImovel() {
+        System.setProperty("webdriver.chrome.driver", "/home/usuarios/usuarios/driver/chromedriver");
+        WebDriver navegador = new ChromeDriver();
+        navegador.manage().window().maximize();
+        navegador.get("http://www.canaanimoveis.com.br/");
+
+        navegador.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+        //Escolhendo o apartamento
+        navegador.findElement(By.cssSelector("img[alt='Apartamento de 44,00m²,  à venda ']")).click();
+
+        //Preenchendo formulário
+        navegador.findElement(By.name("nome")).sendKeys("Leonardo");
+        navegador.findElement(By.name("email")).sendKeys("testeautomacao@testeautomacao.com");
+        navegador.findElement(By.name("telefone")).sendKeys("(31) 9-9999-9999");
+        navegador.findElement(By.name("mensagem")).clear();
+        navegador.findElement(By.name("mensagem")).sendKeys("Esses são meus primeiros passos na automação com Selenium Webdriver.");
+
+    }
+
+ }
