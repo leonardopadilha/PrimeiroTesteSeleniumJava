@@ -1,0 +1,83 @@
+package testSiteDeCompras;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.util.concurrent.TimeUnit;
+
+public class MercadoLivreTest {
+
+    private WebDriver navegador;
+
+    @Before
+    public void setUp() {
+        System.setProperty("webdriver.chrome.driver", "/home/usuarios/drivers/chromedriver");
+        navegador = new ChromeDriver();
+
+        navegador.manage().window().maximize();
+        navegador.get("http://www.google.com.br/");
+
+        navegador.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+        navegador.findElement(By.name("q")).sendKeys("Mercado Livre");
+        navegador.findElement(By.xpath("//div[span='mercado livre']")).click();
+
+        navegador.findElement(By.partialLinkText("Mercado Livre Brasil")).click();
+    }
+
+    @Test
+    public void pesquisarCamisaSocialMasculinaTest(){
+    navegador.findElement(By.name("as_word")).sendKeys("Camisa social masculina gola de padre");
+    navegador.findElement(By.className("nav-search-btn")).click();
+
+        //Fechando pop-up referente a CEP
+        navegador.findElement(By.className("andes-tooltip-button-close")).click();
+
+        //Realizando validação da página de exibição dos produtos
+        WebElement mensagem = navegador.findElement(By.className("ui-search-breadcrumb__title"));
+        String mensagemCompra = mensagem.getText();
+        Assert.assertEquals("Camisa social masculina gola de padre", mensagemCompra);
+    }
+
+    @Test
+    public void olharCamisaSocialMasculinaTest() {
+        navegador.findElement(By.name("as_word")).sendKeys("Camisa social masculina gola de padre");
+        navegador.findElement(By.className("nav-search-btn")).click();
+
+        //Fechando pop-up referente a CEP
+        navegador.findElement(By.className("andes-tooltip-button-close")).click();
+
+        //Fazendo scroll na página
+        JavascriptExecutor js = (JavascriptExecutor) navegador;
+        js.executeScript("javascript:window.scrollBy(710,710)");
+
+        navegador.findElement(By.id("cookieDisclaimerButton")).click();
+    }
+
+    @Test
+    public void verDetalhesCamisaSocialMasculinaTest() {
+        navegador.findElement(By.name("as_word")).sendKeys("Camisa social masculina gola de padre");
+        navegador.findElement(By.className("nav-search-btn")).click();
+
+        //Fechando pop-up referente a CEP
+        navegador.findElement(By.className("andes-tooltip-button-close")).click();
+
+        navegador.findElement(By.id("cookieDisclaimerButton")).click();
+
+        //Selecionando a camisa
+        navegador.findElement(By.cssSelector("img[alt='Camisa Social Masculina Slim Gola Padre - Premium']")).click();
+
+    }
+
+    @After
+    public void fecharNavegador() {
+    navegador.quit();
+  }
+}
