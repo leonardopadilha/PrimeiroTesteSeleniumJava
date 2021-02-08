@@ -1,0 +1,118 @@
+package testSiteDeCompras;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+
+import java.util.concurrent.TimeUnit;
+
+public class SiteComprasTest {
+    private WebDriver navegador;
+
+    @Before
+    public void setUp() {
+        System.setProperty("webdriver.chrome.driver", "/home/user/chromedriver");
+        navegador = new ChromeDriver();
+
+        navegador.manage().window().maximize();
+        navegador.get("http://www.google.com.br/");
+
+        navegador.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+        //Realizando pesquisa e selecionando a opção apresentada no google
+        navegador.findElement(By.name("q")).sendKeys("automationpractice.com");
+        navegador.findElement(By.xpath("//div[span='automationpractice.com']")).click();
+
+        //Selecionando o link desejado
+        navegador.findElement(By.partialLinkText("Automation Practice")).click();
+    }
+
+    @Test
+    public void testSiteComprasRealizarContato() {
+
+        //Indo para contatos
+        navegador.findElement(By.id("contact-link")).click();
+
+        //Fazendo scroll na página
+        realizarScrool();
+
+        //Clicando no dropdown
+        WebElement dropDown = navegador.findElement(By.id("id_contact"));
+        new Select(dropDown).selectByVisibleText("Customer service");
+
+        //Informar e-mail
+        navegador.findElement(By.id("email")).sendKeys("teste@teste.com.br");
+
+        //Informar referência da orderm
+        navegador.findElement(By.id("id_order")).sendKeys("11111");
+
+        //Digitando a mensagem desejada
+        navegador.findElement(By.id("message")).sendKeys("Esse é um teste realizado com " +
+                "Java e Selenium WebDriver.");
+
+        //Clicando no botão enviar
+        navegador.findElement(By.id("submitMessage")).click();
+
+        //Validando mensagem de sucesso exibida
+        WebElement mensagemSucesso = navegador.findElement(By.cssSelector("p[class='alert alert-success']"));
+        String mensagem = mensagemSucesso.getText();
+        Assert.assertEquals("Your message has been successfully sent to our team.", mensagem);
+
+    }
+
+    @Test
+    public void testSiteComprasWomen() {
+        navegador.findElement(By.id("search_query_top")).sendKeys("Casual");
+        navegador.findElement(By.name("submit_search")).click();
+
+        //Fazendo o scrool na página
+        realizarScrool();
+
+        navegador.findElement(By.xpath("//a[@title='Faded Short Sleeve T-shirts']")).click();
+
+        WebDriverWait aguardar = new WebDriverWait(navegador, 20);
+        aguardar.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='fancybox-item fancybox-close']")));
+
+        navegador.findElement(By.xpath("//a[@class='fancybox-item fancybox-close']")).click();
+    }
+
+    @Test
+    public void incluirOpcaoCarrinhoCompra() {
+        navegador.findElement(By.id("search_query_top")).sendKeys("Casual");
+        navegador.findElement(By.name("submit_search")).click();
+
+        //Fazendo o scrool na página
+        realizarScrool();
+
+        navegador.findElement(By.xpath("//a[@title='Faded Short Sleeve T-shirts']")).click();
+
+        WebElement iframe = navegador.findElement(By.cssSelector(".fancybox-iframe"));
+
+        navegador.switchTo().frame(iframe);
+
+        try { Thread.sleep (10000); } catch (InterruptedException ex) {}
+
+        navegador.findElement(By.cssSelector("#add_to_cart button")).click();
+
+        navegador.switchTo().defaultContent();
+    }
+    public void realizarScrool() {
+        JavascriptExecutor js = (JavascriptExecutor) navegador;
+        js.executeScript("javascript:window.scrollBy(250,250)");
+    }
+
+    @After
+    public void fecharNavegador() {
+        navegador.quit();
+    }
+}
+
